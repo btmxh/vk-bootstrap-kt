@@ -1,4 +1,4 @@
-package com.github.ngoduyanh
+package io.github.ngoduyanh
 
 import org.lwjgl.PointerBuffer
 import org.lwjgl.system.MemoryStack.stackGet

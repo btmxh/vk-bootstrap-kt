@@ -21,7 +21,7 @@ publishing {
     }
 }
 
-group 'com.github.ngoduyanh'
+group 'io.github.ngoduyanh'
 version '3.3.0-SNAPSHOT-alpha'
 
 repositories {

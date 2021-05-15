@@ -1,4 +1,4 @@
-package com.github.ngoduyanh
+package io.github.ngoduyanh
 
 import org.lwjgl.PointerBuffer
 import org.lwjgl.system.MemoryUtil.*
@@ -32,7 +32,7 @@ data class Swapchain(
             val images = allocator(ip[0])
             val ret = vkGetSwapchainImagesKHR(device, swapchain, ip, images)
             if (ret != VK_SUCCESS) {
-                com.github.ngoduyanh.SwapchainError.FAILED_GET_SWAPCHAIN_IMAGES.throwError(ret)
+                io.github.ngoduyanh.SwapchainError.FAILED_GET_SWAPCHAIN_IMAGES.throwError(ret)
             }
             images
         }
@@ -172,7 +172,7 @@ class SwapchainBuilder(
     fun build() = runCatching {
         stack {
             if (surface == VK_NULL_HANDLE) {
-                com.github.ngoduyanh.SwapchainError.SURFACE_HANDLE_NOT_PROVIDED.throwError()
+                io.github.ngoduyanh.SwapchainError.SURFACE_HANDLE_NOT_PROVIDED.throwError()
             }
 
             val desiredFormats = ArrayList(this@SwapchainBuilder.desiredFormats)
@@ -230,7 +230,7 @@ class SwapchainBuilder(
             val pSwapchain = mallocLong(1)
             val ret = vkCreateSwapchainKHR(device, createInfo, allocationCallbacks, pSwapchain)
             if (ret != VK_SUCCESS) {
-                com.github.ngoduyanh.SwapchainError.FAILED_CREATE_SWAPCHAIN.throwError(ret)
+                io.github.ngoduyanh.SwapchainError.FAILED_CREATE_SWAPCHAIN.throwError(ret)
             }
 
             Swapchain(

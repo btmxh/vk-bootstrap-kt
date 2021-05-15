@@ -1,4 +1,4 @@
-package com.github.ngoduyanh
+package io.github.ngoduyanh
 
 import org.lwjgl.system.MemoryUtil.memCopy
 import org.lwjgl.system.NativeResource

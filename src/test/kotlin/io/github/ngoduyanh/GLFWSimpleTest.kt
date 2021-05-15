@@ -1,4 +1,4 @@
-package com.github.ngoduyanh
+package io.github.ngoduyanh
 
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWVulkan.glfwCreateWindowSurface
