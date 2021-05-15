@@ -143,7 +143,7 @@ data class PhysicalDeviceDesc(
                 memoryProperties,
                 deviceFeatures2,
                 extendedFeaturesChain
-            ).also { extendedFeaturesChain?.free() }
+            )
         }
     }
 }
@@ -327,7 +327,9 @@ class PhysicalDeviceSelector(private val instance: Instance) : NativeResource {
                 deferSurfaceInitialization,
                 instance.instanceVersion,
                 extensionsToEnable
-            )
+            ).also {
+                descriptions.forEach { it.extendedFeaturesChain?.free() }
+            }
         }
     }
 
