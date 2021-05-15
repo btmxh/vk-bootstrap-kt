@@ -61,7 +61,7 @@ data class Device(
     fun getDedicatedQueue(type: QueueType) = getDedicatedQueueIndex(type).map(::getQueueAt)
 
     override fun free() {
-        physicalDevice.free() // will also free queueFamilies
+        queueFamilies.free()
         vkDestroyDevice(device, allocationCallbacks)
     }
 
@@ -134,10 +134,8 @@ class DeviceBuilder(val physicalDevice: PhysicalDevice) : NativeResource {
                     }
                 }
             } else {
-                println(
-                    "User provided VkPhysicalDeviceFeatures2 instance found in pNext chain. " +
-                            "All requirements added via 'addRequiredExtensionFeatures' will be ignored."
-                )
+                println("User provided VkPhysicalDeviceFeatures2 instance found in pNext chain. " +
+                        "All requirements added via 'addRequiredExtensionFeatures' will be ignored.")
             }
 
             if (!userDefinedPhysicalDeviceFeatures2 && !hasPhysicalDeviceFeatures2) {
@@ -166,7 +164,9 @@ class DeviceBuilder(val physicalDevice: PhysicalDevice) : NativeResource {
                 VkDevice(pDevice[0], physicalDevice.device, deviceCreateInfo, physicalDevice.instanceVersion),
                 physicalDevice,
                 physicalDevice.surfaceKHR,
-                physicalDevice.queueFamilies,
+                VkQueueFamilyProperties.malloc(physicalDevice.queueFamilies.remaining()).also {
+                    memCopy(physicalDevice.queueFamilies, it)
+                },
                 allocationCallbacks
             )
         }

@@ -51,6 +51,7 @@ fun main() {
 
     swapchain.free()
     device.free()
+    physicalDevice.free()
     vkDestroySurfaceKHR(instance.instance, surface, null)
     instance.free()
 
