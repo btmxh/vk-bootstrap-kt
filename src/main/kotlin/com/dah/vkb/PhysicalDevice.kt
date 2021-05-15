@@ -108,32 +108,32 @@ data class PhysicalDeviceDesc(
             var deviceFeatures2: VkPhysicalDeviceFeatures2? = null
             var extendedFeaturesChain: GenericFeaturesPNextNode.Buffer? = null
 
-            if (instance.instanceVersion >= VK_API_VERSION_1_1) {
-                deviceFeatures2 = VkPhysicalDeviceFeatures2.mallocStack()
-                deviceFeatures2.sType(VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2)
+// #if defined(VK_API_VERSION_1_1)
+            deviceFeatures2 = VkPhysicalDeviceFeatures2.mallocStack()
+            deviceFeatures2.sType(VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2)
 
-                val fillChain = GenericFeaturesPNextNode.malloc(srcExtendedFeaturesChain.size)
-                srcExtendedFeaturesChain.forEach { fillChain.put(it) }
-                fillChain.flip()
+            val fillChain = GenericFeaturesPNextNode.malloc(srcExtendedFeaturesChain.size)
+            srcExtendedFeaturesChain.forEach { fillChain.put(it) }
+            fillChain.flip()
 
-                var prev: GenericFeaturesPNextNode? = null
-                if (fillChain.hasRemaining()) {
-                    for (extension in fillChain) {
-                        prev?.pNext(extension.address())
-                        prev = extension
-                    }
+            var prev: GenericFeaturesPNextNode? = null
+            if (fillChain.hasRemaining()) {
+                for (extension in fillChain) {
+                    prev?.pNext(extension.address())
+                    prev = extension
                 }
-
-                stack {
-                    val localFeatures = VkPhysicalDeviceFeatures2.callocStack()
-                        .sType(VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2)
-                        .pNext(fillChain.first().address())
-
-                    vkGetPhysicalDeviceFeatures2(device, localFeatures)
-                }
-
-                extendedFeaturesChain = fillChain
             }
+
+            stack {
+                val localFeatures = VkPhysicalDeviceFeatures2.callocStack()
+                    .sType(VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2)
+                    .pNext(fillChain.first().address())
+
+                vkGetPhysicalDeviceFeatures2(device, localFeatures)
+            }
+
+            extendedFeaturesChain = fillChain
+// #endif
 
             return PhysicalDeviceDesc(
                 device,
@@ -243,7 +243,7 @@ class PhysicalDeviceSelector(private val instance: Instance) : NativeResource {
             extendedFeaturesChain
         )
 
-        if(!requiredFeaturesSupported)  return Suitability.NO
+        if (!requiredFeaturesSupported) return Suitability.NO
 
         val hasRequiredMemory = device.memoryProperties.memoryHeaps().any {
             it.flags() and VK_MEMORY_HEAP_DEVICE_LOCAL_BIT != 0
@@ -254,8 +254,8 @@ class PhysicalDeviceSelector(private val instance: Instance) : NativeResource {
                     && it.size() > desiredMemSize
         }
 
-        if(!hasRequiredMemory)  return Suitability.NO
-        else if(hasPreferredMemory) {
+        if (!hasRequiredMemory) return Suitability.NO
+        else if (hasPreferredMemory) {
             suitability = Suitability.PARTIAL
         }
 
@@ -410,7 +410,7 @@ data class PhysicalDevice(
     val deferSurfaceInitialization: Boolean,
     val instanceVersion: VkVersion,
     val extensionsToEnable: List<String>
-): NativeResource {
+) : NativeResource {
     fun hasDedicatedComputeQueue() = getDedicatedComputeQueueIndex(queueFamilies) >= 0
     fun hasDedicatedTransferQueue() = getDedicatedTransferQueueIndex(queueFamilies) >= 0
     fun hasSeparateComputeQueue() = getSeparateComputeQueueIndex(queueFamilies) >= 0
