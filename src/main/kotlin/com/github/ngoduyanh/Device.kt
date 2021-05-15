@@ -1,4 +1,4 @@
-package com.dah.vkb
+package com.github.ngoduyanh
 
 import org.lwjgl.system.MemoryUtil.memCopy
 import org.lwjgl.system.NativeResource

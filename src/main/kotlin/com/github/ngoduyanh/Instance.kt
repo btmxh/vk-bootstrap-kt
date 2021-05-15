@@ -1,4 +1,4 @@
-package com.dah.vkb
+package com.github.ngoduyanh
 
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.NULL
@@ -125,9 +125,9 @@ class InstanceBuilder : NativeResource {
                 if (queriedAPIVersion < requiredAPIVersion) {
                     when (VK_VERSION_MINOR(requiredAPIVersion)) {
                         // same behaviour as C++ version
-                        2 -> InstanceError.VULKAN_VERSION_1_2_UNAVAILABLE.throwError()
-                        0 -> InstanceError.VULKAN_UNAVAILABLE.throwError()
-                        else -> InstanceError.VULKAN_VERSION_1_1_UNAVAILABLE.throwError()
+                        2 -> com.github.ngoduyanh.InstanceError.VULKAN_VERSION_1_2_UNAVAILABLE.throwError()
+                        0 -> com.github.ngoduyanh.InstanceError.VULKAN_UNAVAILABLE.throwError()
+                        else -> com.github.ngoduyanh.InstanceError.VULKAN_VERSION_1_1_UNAVAILABLE.throwError()
                     }
                 }
                 if (requiredAPIVersion > vk10) {
@@ -169,13 +169,13 @@ class InstanceBuilder : NativeResource {
                 }
 
                 if (!khrSurfaceAdded || !addWindowEXTs) {
-                    InstanceError.WINDOWING_EXTENSIONS_NOT_PRESENT.throwError()
+                    com.github.ngoduyanh.InstanceError.WINDOWING_EXTENSIONS_NOT_PRESENT.throwError()
                 }
             }
 
             extensions.flip()
             if (!checkExtensionsSupported(systemInfo.availableExtensions, extensions)) {
-                InstanceError.REQUESTED_EXTENSIONS_NOT_PRESENT.throwError()
+                com.github.ngoduyanh.InstanceError.REQUESTED_EXTENSIONS_NOT_PRESENT.throwError()
             }
 
             val layers = mallocPointer(this@InstanceBuilder.layers.size + 1)
@@ -186,7 +186,7 @@ class InstanceBuilder : NativeResource {
             layers.flip()
 
             if (!checkLayersSupported(systemInfo.availableLayers, layers)) {
-                InstanceError.REQUESTED_LAYERS_NOT_PRESENT.throwError()
+                com.github.ngoduyanh.InstanceError.REQUESTED_LAYERS_NOT_PRESENT.throwError()
             }
 
             val pNextChain = arrayListOf<VkBaseOutStructure>()
@@ -238,7 +238,7 @@ class InstanceBuilder : NativeResource {
             var ret: Int
             ret = vkCreateInstance(instanceCreateInfo, allocator, pp)
             if (ret != VK_SUCCESS) {
-                InstanceError.FAILED_CREATE_INSTANCE.throwError(ret)
+                com.github.ngoduyanh.InstanceError.FAILED_CREATE_INSTANCE.throwError(ret)
             }
 
             val vkInstance = VkInstance(pp[0], instanceCreateInfo)
@@ -256,7 +256,7 @@ class InstanceBuilder : NativeResource {
                     allocator
                 )
                 if (ret != VK_SUCCESS) {
-                    InstanceError.FAILED_CREATE_DEBUG_MESSENGER.throwError(ret)
+                    com.github.ngoduyanh.InstanceError.FAILED_CREATE_DEBUG_MESSENGER.throwError(ret)
                 }
                 pMessenger[0]
             } else VK_NULL_HANDLE
