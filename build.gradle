@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.dah'
-version '0.1.0'
+version '3.3.0-SNAPSHOT-alpha'
 
 repositories {
     mavenCentral()
