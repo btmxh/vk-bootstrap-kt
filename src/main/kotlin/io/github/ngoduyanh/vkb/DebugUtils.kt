@@ -7,7 +7,7 @@ import java.io.PrintStream
 val defaultCallbackStream: PrintStream = System.err
 
 fun vulkanDebugCallback(stream: PrintStream): VkDebugUtilsMessengerCallbackEXTI {
-    return VkDebugUtilsMessengerCallbackEXTI { messageSeverity, messageTypes, pCallbackData, pUserData ->
+    return VkDebugUtilsMessengerCallbackEXTI { messageSeverity, messageTypes, pCallbackData, _ ->
         val severity = messageSeverity.messageSeverityToString()
         val types = messageTypes.messageTypeToString()
         val message = VkDebugUtilsMessengerCallbackDataEXT.create(pCallbackData).pMessageString()
