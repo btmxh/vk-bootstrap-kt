@@ -6,14 +6,14 @@ plugins {
 }
 
 group 'io.github.ngoduyanh'
-version '3.3.0-SNAPSHOT-alpha'
+project.ext.lwjglVersion = "3.3.0-SNAPSHOT"
+version "${lwjglVersion}-0.1.0"
 
 repositories {
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
-project.ext.lwjglVersion = "3.3.0-SNAPSHOT"
 
 switch (OperatingSystem.current()) {
     case OperatingSystem.LINUX:
@@ -34,16 +34,18 @@ switch (OperatingSystem.current()) {
 }
 
 dependencies {
-    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "org.lwjgl:lwjgl"
-    implementation "org.lwjgl:lwjgl-vulkan"
-    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
-    if (lwjglNatives == "natives-macos") runtimeOnly "org.lwjgl:lwjgl-vulkan::$lwjglNatives"
+    implementation "org.lwjgl:lwjgl:$lwjglVersion"
+    implementation "org.lwjgl:lwjgl-vulkan:$lwjglVersion"
 
+    testImplementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
     testImplementation "org.lwjgl:lwjgl-glfw"
     testRuntimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    testRuntimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    if (lwjglNatives == "natives-macos")
+        testRuntimeOnly "org.lwjgl:lwjgl-vulkan::$lwjglNatives"
+
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
