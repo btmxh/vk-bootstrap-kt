@@ -1,4 +1,4 @@
-package io.github.ngoduyanh
+package io.github.ngoduyanh.vkb
 
 import org.lwjgl.system.MemoryUtil
 import org.lwjgl.vulkan.*

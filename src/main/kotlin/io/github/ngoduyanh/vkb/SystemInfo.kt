@@ -1,4 +1,4 @@
-package io.github.ngoduyanh
+package io.github.ngoduyanh.vkb
 
 import org.lwjgl.system.NativeResource
 import org.lwjgl.vulkan.EXTDebugUtils.VK_EXT_DEBUG_UTILS_EXTENSION_NAME

@@ -1,4 +1,4 @@
-package io.github.ngoduyanh
+package io.github.ngoduyanh.vkb
 
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryStack.stackPop

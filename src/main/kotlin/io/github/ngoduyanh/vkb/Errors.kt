@@ -1,4 +1,4 @@
-package io.github.ngoduyanh
+package io.github.ngoduyanh.vkb
 
 import org.lwjgl.vulkan.VK10.VK_SUCCESS
 import java.lang.RuntimeException

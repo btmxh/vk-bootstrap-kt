@@ -1,4 +1,4 @@
-package io.github.ngoduyanh
+package io.github.ngoduyanh.vkb
 
 import org.lwjgl.system.MemoryStack.stackGet
 import org.lwjgl.system.MemoryStack.wrap
@@ -266,7 +266,7 @@ class PhysicalDeviceSelector(private val instance: Instance) : NativeResource {
         stack {
             if (!instance.headless && !deferSurfaceInitialization) {
                 if (surface == VK_NULL_HANDLE) {
-                    io.github.ngoduyanh.PhysicalDeviceError.NO_SURFACE_PROVIDED.throwError()
+                    io.github.ngoduyanh.vkb.PhysicalDeviceError.NO_SURFACE_PROVIDED.throwError()
                 }
             }
             val ip = mallocInt(1)
@@ -274,10 +274,10 @@ class PhysicalDeviceSelector(private val instance: Instance) : NativeResource {
             val physicalDevices = mallocPointer(ip[0])
             val ret = vkEnumeratePhysicalDevices(instance.instance, ip, physicalDevices)
             if (ret != VK_SUCCESS) {
-                io.github.ngoduyanh.PhysicalDeviceError.FAILED_ENUMERATE_PHYSICAL_DEVICES.throwError(ret)
+                io.github.ngoduyanh.vkb.PhysicalDeviceError.FAILED_ENUMERATE_PHYSICAL_DEVICES.throwError(ret)
             }
             if (!physicalDevices.hasRemaining()) {
-                io.github.ngoduyanh.PhysicalDeviceError.NO_PHYSICAL_DEVICES_FOUND.throwError()
+                io.github.ngoduyanh.vkb.PhysicalDeviceError.NO_PHYSICAL_DEVICES_FOUND.throwError()
             }
 
             val descriptions = (physicalDevices.position() until physicalDevices.limit())
@@ -302,7 +302,7 @@ class PhysicalDeviceSelector(private val instance: Instance) : NativeResource {
                     }
                 }
             }
-            selectedDevice ?: io.github.ngoduyanh.PhysicalDeviceError.NO_SUITABLE_DEVICE.throwError()
+            selectedDevice ?: io.github.ngoduyanh.vkb.PhysicalDeviceError.NO_SUITABLE_DEVICE.throwError()
 
             val extensionsToEnable = ArrayList<String>(requiredExtensions)
             checkDeviceExtensionSupport(selectedDevice.device, desiredExtensions)
