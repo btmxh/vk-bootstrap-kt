@@ -73,7 +73,7 @@ fun initVulkan(): Boolean {
 
 ## Setting up vk-bootstrap-kt
 
-* i'm still working on this btw
+* jitpack.io way is currently broken, please manually download the jars
 
 Go [here](https://jitpack.io/#ngoduyanh/vk-bootstrap-kt/v3.3.0-SNAPSHOT-alpha) and do as the instructions there.
 
