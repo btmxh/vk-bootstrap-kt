@@ -73,4 +73,25 @@ fun initVulkan(): Boolean {
 
 ## Setting up vk-bootstrap-kt
 
-idk lmao, clone this and use subprojects maybe???
+Go [here](https://jitpack.io/#ngoduyanh/vk-bootstrap-kt/v3.3.0-SNAPSHOT-alpha) and do as the instructions there.
+
+You can also use variables to make thing easier to work with
+
+```gradle
+
+//generated from LWJGL's build.gradle file
+project.ext.lwjglVersion = "3.3.0-SNAPSHOT"
+
+repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    // implementation 'com.github.ngoduyanh:vk-bootstrap-kt:$lwjglVersion'
+    
+    // there is only an alpha version right now
+    implementation 'com.github.ngoduyanh:vk-bootstrap-kt:$lwjglVersion-alpha'
+}
+```
+
